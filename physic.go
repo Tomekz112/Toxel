@@ -6,7 +6,7 @@ import (
 	"github.com/faiface/pixel"
 )
 
-type hitbox struct {
+type Hitbox struct {
 	minX   float64
 	minY   float64
 	maxX   float64
@@ -14,7 +14,7 @@ type hitbox struct {
 	radius float64
 }
 
-var emptyHitbox = &hitbox{0, 0, 0, 0, 0}
+var EmptyHitbox = &Hitbox{0, 0, 0, 0, 0}
 
 //GameObject is gameobject with its sprite, type and hitbox
 type GameObject struct {
