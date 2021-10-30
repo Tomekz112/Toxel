@@ -20,7 +20,7 @@ type Button struct {
 //newButton creates new Button with simple hitboxes
 func NewButton(buttonText string, position pixel.Vec, scale float64, atlas *text.Atlas, onPress func()) *Button {
 	button := &Button{
-		gameObject: emptyGameObject,
+		gameObject: EmptyGameObject,
 		text:       buttonText,
 		atlas:      atlas,
 		onPress:    onPress,
