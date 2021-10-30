@@ -30,7 +30,7 @@ type GameObject struct {
 var emptyGameObject = GameObject{true, pixel.ZV, emptyHitbox, nil, 1, []Animator{}, 0}
 
 //convert pixel rectangle to toxel hitbox
-func rectToHitbox(rect pixel.Rect, scale float64, pos pixel.Vec) *hitbox {
+func RectToHitbox(rect pixel.Rect, scale float64, pos pixel.Vec) *hitbox {
 	return &hitbox{
 		minX:   rect.Min.X - pos.X - (6 * scale),
 		minY:   rect.Min.Y - pos.Y - (9 * scale),
@@ -41,7 +41,7 @@ func rectToHitbox(rect pixel.Rect, scale float64, pos pixel.Vec) *hitbox {
 }
 
 //changes gameObject scale without messing up the hitbox
-func (g *GameObject) setScale(scale float64) {
+func (g *GameObject) SetScale(scale float64) {
 	g.Hitbox.maxX *= scale / g.Scale
 	g.Hitbox.maxY *= scale / g.Scale
 	g.Scale = scale
@@ -64,11 +64,11 @@ func (g *GameObject) setScale(scale float64) {
 
 //hitboxesCollide Checks whenever any hitbox collide with any object
 //It uses
-func anyHitboxesCollide(gameObjects []GameObject) [][]int {
+func AnyHitboxesCollide(gameObjects []GameObject) [][]int {
 	var colliders [][]int
 	for i := 0; i != len(gameObjects); i++ {
 		for j := 0; j != len(gameObjects); j++ {
-			if i != j && hitboxCollides(gameObjects[i], gameObjects[j]) {
+			if i != j && HitboxCollides(gameObjects[i], gameObjects[j]) {
 				colliders = append(colliders, []int{i, j})
 			}
 		}
@@ -79,26 +79,26 @@ func anyHitboxesCollide(gameObjects []GameObject) [][]int {
 func (g *GameObject) Collide(gameObjects []GameObject) []int {
 	var colliders []int
 	for j := 0; j != len(gameObjects); j++ {
-		if hitboxCollides(*g, gameObjects[j]) {
+		if HitboxCollides(*g, gameObjects[j]) {
 			colliders = append(colliders, j)
 		}
 	}
 	return colliders
 }
 
-func hitboxCollides(a, b GameObject) bool {
-	return inBetween(a.Pos.X, a.Hitbox.minX-b.Hitbox.minX, a.Hitbox.maxX+b.Hitbox.maxX, a.Hitbox.radius+b.Hitbox.radius) && //
-		inBetween(a.Pos.Y, b.Hitbox.minY+a.Hitbox.minY, b.Hitbox.maxY+a.Hitbox.maxY, a.Hitbox.radius+b.Hitbox.radius) || //&&
+func HitboxCollides(a, b GameObject) bool {
+	return InBetween(a.Pos.X, a.Hitbox.minX-b.Hitbox.minX, a.Hitbox.maxX+b.Hitbox.maxX, a.Hitbox.radius+b.Hitbox.radius) && //
+		InBetween(a.Pos.Y, b.Hitbox.minY+a.Hitbox.minY, b.Hitbox.maxY+a.Hitbox.maxY, a.Hitbox.radius+b.Hitbox.radius) || //&&
 		// inBetween(a.Pos.Y, b.Hitbox.minY+a.Hitbox.minY, b.Hitbox.maxY+a.Hitbox.maxY, b.Hitbox.radius) ||
-		inRadius(a.Hitbox.radius, b.Hitbox.radius, a.Pos, b.Pos)
+		InRadius(a.Hitbox.radius, b.Hitbox.radius, a.Pos, b.Pos)
 }
 
-func inBetween(num, min, max, difference float64) bool {
+func InBetween(num, min, max, difference float64) bool {
 	return num > min-difference && num < max+difference
 }
 
-func inRadius(aRadius, bRadius float64, aPos, bPos pixel.Vec) bool {
+func InRadius(aRadius, bRadius float64, aPos, bPos pixel.Vec) bool {
 	radius := aRadius + bRadius
-	return inBetween(aPos.Sub(bPos).X, radius*-1, radius, 0) &&
-		inBetween(aPos.Sub(bPos).Y, radius*-1, radius, 0)
+	return InBetween(aPos.Sub(bPos).X, radius*-1, radius, 0) &&
+		InBetween(aPos.Sub(bPos).Y, radius*-1, radius, 0)
 }

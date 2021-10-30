@@ -18,7 +18,7 @@ type Button struct {
 //TODO: implement function for checking if user pressed button.
 
 //newButton creates new Button with simple hitboxes
-func newButton(buttonText string, position pixel.Vec, scale float64, atlas *text.Atlas, onPress func()) *Button {
+func NewButton(buttonText string, position pixel.Vec, scale float64, atlas *text.Atlas, onPress func()) *Button {
 	button := &Button{
 		gameObject: emptyGameObject,
 		text:       buttonText,
@@ -30,12 +30,12 @@ func newButton(buttonText string, position pixel.Vec, scale float64, atlas *text
 	textProperties := text.New(button.gameObject.Pos, button.atlas)
 	fmt.Fprintln(textProperties, button.text)
 	unscaledHitbox := textProperties.Bounds()
-	button.gameObject.Hitbox = rectToHitbox(unscaledHitbox, scale, button.gameObject.Pos)
+	button.gameObject.Hitbox = RectToHitbox(unscaledHitbox, scale, button.gameObject.Pos)
 	return button
 }
 
 //setScale sets button scale without messing up the hitboxes (can be buggy)
-func (b *Button) setScale(scale float64) {
+func (b *Button) SetScale(scale float64) {
 	b.gameObject.Hitbox.minX += 6*scale - (6 * b.gameObject.Scale)
 	b.gameObject.Hitbox.minY += 9*scale - (9 * b.gameObject.Scale)
 	b.gameObject.Hitbox.maxY *= scale / b.gameObject.Scale

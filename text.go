@@ -19,12 +19,12 @@ type ToxelText struct {
 	atlas *text.Atlas
 }
 
-var basicColor = pixel.Alpha(1)
-var basicAtlas = text.NewAtlas(basicfont.Face7x13, text.ASCII)
-var emptyButton = Button{emptyGameObject, "", basicAtlas, nil}
+var BasicColor = pixel.Alpha(1)
+var BasicAtlas = text.NewAtlas(basicfont.Face7x13, text.ASCII)
+var EmptyButton = Button{emptyGameObject, "", BasicAtlas, nil}
 
 //Creates new text
-func newText(Text string, position pixel.Vec, scale float64, atlas *text.Atlas) *ToxelText {
+func NewText(Text string, position pixel.Vec, scale float64, atlas *text.Atlas) *ToxelText {
 	newText := &ToxelText{
 		pos:   position,
 		scale: scale,
@@ -36,8 +36,8 @@ func newText(Text string, position pixel.Vec, scale float64, atlas *text.Atlas) 
 //autoLineBreak creates linebreak if text crosses given point
 //Be aware that autoLineBreak delets all old endlines from text
 //Warning: splits words in dumb way
-func (t *ToxelText) autoLineBreak(maxX float64) {
-	t.removeEndLines()
+func (t *ToxelText) AutoLineBreak(maxX float64) {
+	t.RemoveEndLines()
 	var finalText = t.text
 	textlngth := float64(len(t.text)) * 6 * t.scale //gets text length by mulptiplying characters count by size of 1 character * scale
 	if textlngth > maxX {                           //if textlength is crossing given point
@@ -51,7 +51,7 @@ func (t *ToxelText) autoLineBreak(maxX float64) {
 	t.text = finalText
 }
 
-func (t *ToxelText) removeEndLines() {
+func (t *ToxelText) RemoveEndLines() {
 	t.text = strings.ReplaceAll(t.text, "\n", "")
 }
 
